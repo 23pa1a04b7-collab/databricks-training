@@ -27,6 +27,8 @@ course_id              course_name             instructor_id
 LEFT JOIN
 
 LEFT JOIN returns all records from the left table and matching records from the right table. If there is no match, NULL values
+
+
  1.SELECT *
 FROM table1
 LEFT JOIN table2
