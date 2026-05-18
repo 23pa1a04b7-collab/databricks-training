@@ -139,3 +139,66 @@ ON c.instructor_id = i.instructor_id;
 
 CROSS JOIN courses c;
 
+  # LEFT JOIN
+
+LEFT JOIN returns all records from the left table and matching records from the right table. If there is no match, NULL values are returned.
+
+```sql
+SELECT * 
+FROM table1
+LEFT JOIN table2
+ON table1.id = table2.id;
+```
+
+# RIGHT JOIN
+
+RIGHT JOIN returns all records from the right table and matching records from the left table.
+
+```sql
+SELECT * 
+FROM table1
+RIGHT JOIN table2
+ON table1.id = table2.id;
+```
+
+# FULL OUTER JOIN
+
+FULL OUTER JOIN returns all matching and non-matching rows from both tables.
+
+```sql
+SELECT * 
+FROM table1
+FULL OUTER JOIN table2
+ON table1.id = table2.id;
+```
+
+# Queries
+
+## 1. Display all students and the courses they are enrolled in
+
+```sql
+SELECT s.student_name, c.course_name
+FROM students s
+LEFT JOIN enrollments e
+ON s.student_id = e.student_id
+LEFT JOIN courses c
+ON e.course_id = c.course_id;
+```
+
+## 2. Find all courses that currently have no students enrolled
+
+```sql
+SELECT c.course_name
+FROM courses c
+LEFT JOIN enrollments e
+ON c.course_id = e.course_id
+WHERE e.student_id IS NULL;
+```
+
+## 3. Find all courses without instructors
+
+```sql
+SELECT course_name
+FROM courses
+WHERE instructor_id IS NULL;
+```
