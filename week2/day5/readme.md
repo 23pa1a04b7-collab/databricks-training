@@ -2134,6 +2134,289 @@ ELSE 'Calendar Drift'
 END AS calendar_status
 FROM salary_calendar;
 ```
+# LEVEL 1 – QUESTION 1  
+# Salary Risk Flagging Based on Tax Shock
+
+```sql
+SELECT
+LOWER(emp_name) AS employee_name,
+
+ROUND(
+salary - (salary * tax_percent/100)
+) AS net_salary,
+
+YEAR(last_revision) AS revision_year,
+
+TIMESTAMPDIFF(MONTH,last_revision,CURDATE()) AS months_since_revision,
+
+CASE
+WHEN tax_percent > 20
+AND TIMESTAMPDIFF(MONTH,last_revision,CURDATE()) > 24
+THEN 'Flag Tax Shock'
+
+WHEN tax_percent BETWEEN 15 AND 20
+THEN 'Flag Review Needed'
+
+ELSE 'Stable'
+END AS tax_status
+
+FROM salary_audit;
+```
+
+---
+
+# QUESTION 2  
+# Bonus Abuse Detection
+
+```sql
+SELECT
+CONCAT(
+UPPER(LEFT(emp_name,1)),
+LOWER(SUBSTRING(emp_name,2))
+) AS proper_name,
+
+ROUND((bonus/base_salary)*100,2) AS bonus_percentage,
+
+DAYNAME(bonus_date) AS bonus_day,
+
+ABS(base_salary - bonus) AS salary_bonus_difference,
+
+CASE
+WHEN ((bonus/base_salary)*100) > 30
+AND DAYNAME(bonus_date) IN ('Saturday','Sunday')
+THEN 'Suspicious'
+
+WHEN ((bonus/base_salary)*100) <= 20
+THEN 'Normal'
+
+ELSE 'Audit'
+END AS bonus_status
+
+FROM bonus_monitor;
+```
+
+---
+
+# QUESTION 3  
+# Experience Parity Validation
+
+```sql
+SELECT
+UPPER(emp_name) AS employee_name,
+
+TIMESTAMPDIFF(YEAR,joining_date,CURDATE()) AS actual_experience,
+
+ABS(
+declared_experience -
+TIMESTAMPDIFF(YEAR,joining_date,CURDATE())
+) AS experience_difference,
+
+FLOOR(salary) AS floor_salary,
+
+CASE
+WHEN declared_experience >
+TIMESTAMPDIFF(YEAR,joining_date,CURDATE())
+THEN 'Overstated'
+
+WHEN declared_experience <
+TIMESTAMPDIFF(YEAR,joining_date,CURDATE())
+THEN 'Understated'
+
+ELSE 'Matched'
+END AS experience_status
+
+FROM employee_experience;
+```
+
+---
+
+# QUESTION 4  
+# Salary Digit Pattern Analysis
+
+```sql
+SELECT
+RIGHT(emp_name,2) AS last_two_characters,
+
+DAY(credit_date) AS day_of_month,
+
+TRUNCATE(salary,0) AS truncated_salary,
+
+MOD(salary,10) AS salary_mod,
+
+CASE
+WHEN MOD(salary,10)=DAY(credit_date)
+THEN 'Pattern Match'
+
+ELSE 'No Match'
+END AS pattern_status
+
+FROM salary_digits;
+```
+
+---
+
+# QUESTION 5  
+# Odd–Even Salary Compliance
+
+```sql
+SELECT
+LOWER(emp_name) AS employee_name,
+
+DAYNAME(payment_date) AS weekday_name,
+
+ROUND(salary) AS rounded_salary,
+
+MOD(ROUND(salary),2) AS salary_mod,
+
+CASE
+WHEN MOD(ROUND(salary),2)=0
+AND DAYOFWEEK(payment_date) IN (1,3,5,7)
+THEN 'Violation'
+
+ELSE 'Compliant'
+END AS compliance_status
+
+FROM payroll_control;
+```
+
+---
+
+# QUESTION 6  
+# Salary Inflation Drift
+
+```sql
+SELECT
+CONCAT(
+UPPER(LEFT(emp_name,1)),
+LOWER(SUBSTRING(emp_name,2))
+) AS proper_name,
+
+TIMESTAMPDIFF(YEAR,last_hike,CURDATE()) AS years_since_hike,
+
+POWER(
+TIMESTAMPDIFF(YEAR,last_hike,CURDATE()),2
+) AS power_value,
+
+ROUND(
+salary *
+POWER(1.05,
+TIMESTAMPDIFF(YEAR,last_hike,CURDATE()))
+) AS salary_impact,
+
+CASE
+WHEN TIMESTAMPDIFF(YEAR,last_hike,CURDATE()) > 5
+THEN 'High Inflation Risk'
+
+WHEN TIMESTAMPDIFF(YEAR,last_hike,CURDATE()) BETWEEN 3 AND 5
+THEN 'Moderate'
+
+ELSE 'Low'
+END AS inflation_status
+
+FROM inflation_watch;
+```
+
+---
+
+# QUESTION 7  
+# Salary Sign Integrity Check
+
+```sql
+SELECT
+UPPER(emp_name) AS employee_name,
+
+YEAR(record_date) AS record_year,
+
+SIGN(salary) AS salary_sign,
+
+ABS(salary) AS absolute_salary,
+
+CASE
+WHEN salary < 0
+THEN 'Negative Error'
+
+WHEN salary = 0
+THEN 'Zero Salary'
+
+ELSE 'Valid'
+END AS integrity_status
+
+FROM salary_integrity;
+```
+
+---
+
+# QUESTION 8  
+# Name Length vs Salary Correlation
+
+```sql
+SELECT
+LENGTH(emp_name) AS name_length,
+
+TIMESTAMPDIFF(YEAR,join_date,CURDATE()) AS years_of_service,
+
+ROUND(salary) AS rounded_salary,
+
+CASE
+WHEN LENGTH(emp_name) >
+TIMESTAMPDIFF(YEAR,join_date,CURDATE())
+THEN 'Name Bias'
+
+ELSE 'Neutral'
+END AS correlation_status
+
+FROM name_salary;
+```
+
+---
+
+# QUESTION 9  
+# Salary Spike Detection by Month
+
+```sql
+SELECT
+MONTHNAME(paid_date) AS month_name,
+
+CEIL(salary) AS ceil_salary,
+
+LAST_DAY(paid_date) AS last_day_of_month,
+
+CASE
+WHEN paid_date = LAST_DAY(paid_date)
+THEN 'End Month Spike'
+
+ELSE 'Regular'
+END AS spike_status
+
+FROM salary_monthly;
+```
+
+---
+
+# QUESTION 10  
+# Salary Digit Sum Audit
+
+```sql
+SELECT
+LEFT(emp_name,1) AS first_character,
+
+TRUNCATE(salary,0) AS truncated_salary,
+
+DAY(audit_date) AS audit_day,
+
+CASE
+WHEN (
+MOD(TRUNCATE(salary,0),10) +
+MOD(FLOOR(TRUNCATE(salary,0)/10),10)
+) > DAY(audit_date)
+THEN 'Digit Alert'
+
+ELSE 'Normal'
+END AS audit_status
+
+FROM digit_audit;
+```
+
 
 
 # LEVEL 2 – QUESTION 1  
