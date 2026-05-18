@@ -17,8 +17,7 @@ LEAD() -> Returns next row value
 --------------------------------------------------
 ###Database Schema
 The datasets models a retail sales company with employees,customers,products,and orders.
-
-### 1.employees
+ .employees
 employee_id        employee_name      department       salary       hire_date
 1                  Alice johnson      sales            70000         2020-01-15
 2                  Bob Smith          sales            65000         2021-03-20
