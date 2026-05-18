@@ -1,6 +1,6 @@
 DAY 1 – SQL JOINS
 Theory
-student
+##student
 student_id                student_name            email
 1.                        Alice johnson           alice@email.com
 2.                        Bob Smith               bob@email.com
@@ -8,7 +8,7 @@ student_id                student_name            email
 4.                        Diana Prince            diana@email.com
 5.                        Ethan Hunt              ethan@email.com
 
-courses
+##courses
 course_id              course_name             instructor_id
 101                    SQL Basics               1
 102                    Python Fundamentals      2
@@ -24,10 +24,10 @@ course_id              course_name             instructor_id
 
 
 
-LEFT JOIN
+##LEFT JOIN
 
 LEFT JOIN returns all records from the left table and matching records from the right table. If there is no match, NULL values
-
+''sql
 
  1.SELECT *
 FROM table1
