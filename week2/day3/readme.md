@@ -153,7 +153,7 @@ INSERT INTO Mark VALUES
 (115,209,'Final',73,'2024-05-22');
 
 
--- 1. List all students along with their department names
+## 1. List all students along with their department names
 SELECT s.student_name, d.department_name
 FROM Student s
 JOIN Department d
