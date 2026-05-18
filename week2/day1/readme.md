@@ -17,188 +17,154 @@ course_id              course_name             instructor_id
 105                    Machine Learning         Null
 
 
+# SQL JOINS ASSIGNMENT
 
+## 1. Display all students and the courses they are enrolled in. Include students who are not enrolled in any course.
 
-
-
-
-
-
-##LEFT JOIN
-
-LEFT JOIN returns all records from the left table and matching records from the right table. If there is no match, NULL values
-''sql
-
- 1.SELECT *
-FROM table1
-LEFT JOIN table2
-ON table1.id = table2.id;
-
-
-RIGHT JOIN
-
-RIGHT JOIN returns all records from the right table and matching records from the left table.
-
-  2.SELECT *
-FROM table1
-RIGHT JOIN table2
-ON table1.id = table2.id;
-
-FULL OUTER JOIN
-
-FULL OUTER JOIN returns all matching and non-matching rows from both tables.
-
-SELECT *
-FROM table1
-FULL OUTER JOIN table2
-ON table1.id = table2.id;
-
-1. Display all students and the courses they are enrolled in.
- SELECT s.student_name, c.course_name
+```sql
+SELECT s.student_name, c.course_name
 FROM students s
 LEFT JOIN enrollments e
 ON s.student_id = e.student_id
 LEFT JOIN courses c
 ON e.course_id = c.course_id;
+```
 
-2. Find all courses that currently have no students enrolled.
+---
 
+## 2. Find all courses that currently have no students enrolled.
+
+```sql
 SELECT c.course_name
 FROM courses c
 LEFT JOIN enrollments e
 ON c.course_id = e.course_id
 WHERE e.student_id IS NULL;
+```
 
-4. Find all courses without instructors.
+---
 
+## 3. Display all instructors and the courses they teach, including instructors who are not assigned to any course.
+
+```sql
+SELECT i.instructor_name, c.course_name
+FROM instructors i
+LEFT JOIN courses c
+ON i.instructor_id = c.instructor_id;
+```
+
+---
+
+## 4. Find all courses that do not have an instructor assigned.
+
+```sql
 SELECT course_name
 FROM courses
 WHERE instructor_id IS NULL;
+```
 
-5. Display students and enrollment information using RIGHT JOIN.
+---
+
+## 5. Display all students and enrollment information using a RIGHT JOIN.
+
+```sql
 SELECT s.student_name, e.course_id
 FROM students s
 RIGHT JOIN enrollments e
 ON s.student_id = e.student_id;
+```
 
-6.Find students not enrolled in any course.
+---
+
+## 6. Find students who are not enrolled in any course.
+
+```sql
 SELECT s.student_name
 FROM students s
 LEFT JOIN enrollments e
 ON s.student_id = e.student_id
 WHERE e.course_id IS NULL;
+```
 
-7. FULL OUTER JOIN for students and enrollments.
+---
+
+## 7. Use a FULL OUTER JOIN to display all students and enrollments, including unmatched rows from both tables.
+
+```sql
 SELECT s.student_name, e.course_id
 FROM students s
 FULL OUTER JOIN enrollments e
 ON s.student_id = e.student_id;
+```
 
-8. Find courses never appearing in enrollments.
+---
 
+## 8. Find all courses that have never appeared in the enrollments table.
+
+```sql
 SELECT c.course_name
 FROM courses c
 LEFT JOIN enrollments e
 ON c.course_id = e.course_id
 WHERE e.course_id IS NULL;
+```
 
-9. FULL OUTER JOIN for instructors and courses.
- SELECT i.instructor_name, c.course_name
+---
+
+## 9. Display all instructors and courses using a FULL OUTER JOIN and identify unmatched rows.
+
+```sql
+SELECT i.instructor_name, c.course_name
 FROM instructors i
 FULL OUTER JOIN courses c
 ON i.instructor_id = c.instructor_id;
+```
 
+---
 
-10. Report showing student, course, and instructor names.
-SELECT s.student_name,
-       c.course_name,
-       i.instructor_name
+## 10. Create a report showing student name, course name, and instructor name. Include rows even if course or instructor information is missing.
+
+```sql
+SELECT s.student_name, c.course_name, i.instructor_name
 FROM students s
 LEFT JOIN enrollments e
 ON s.student_id = e.student_id
 LEFT JOIN courses c
 ON e.course_id = c.course_id
-
-
-Bonus Challenge
-SELECT s.student_name, c.course_name
-FROM students s
-CROSS JOIN courses c;
 LEFT JOIN instructors i
 ON c.instructor_id = i.instructor_id;
-
-
-
-
-
-
-
-
-
-
-
-CROSS JOIN courses c;
-
-  # LEFT JOIN
-
-LEFT JOIN returns all records from the left table and matching records from the right table. If there is no match, NULL values are returned.
-
-```sql
-SELECT * 
-FROM table1
-LEFT JOIN table2
-ON table1.id = table2.id;
 ```
 
-# RIGHT JOIN
+---
 
-RIGHT JOIN returns all records from the right table and matching records from the left table.
+# Bonus Challenge
 
-```sql
-SELECT * 
-FROM table1
-RIGHT JOIN table2
-ON table1.id = table2.id;
-```
-
-# FULL OUTER JOIN
-
-FULL OUTER JOIN returns all matching and non-matching rows from both tables.
-
-```sql
-SELECT * 
-FROM table1
-FULL OUTER JOIN table2
-ON table1.id = table2.id;
-```
-
-# Queries
-
-## 1. Display all students and the courses they are enrolled in
+## Write a query that lists every student and every course, even if there is no enrollment relationship between them.
 
 ```sql
 SELECT s.student_name, c.course_name
 FROM students s
-LEFT JOIN enrollments e
-ON s.student_id = e.student_id
-LEFT JOIN courses c
-ON e.course_id = c.course_id;
+CROSS JOIN courses c;
 ```
 
-## 2. Find all courses that currently have no students enrolled
 
-```sql
-SELECT c.course_name
-FROM courses c
-LEFT JOIN enrollments e
-ON c.course_id = e.course_id
-WHERE e.student_id IS NULL;
-```
 
-## 3. Find all courses without instructors
 
-```sql
-SELECT course_name
-FROM courses
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 WHERE instructor_id IS NULL;
 ```
