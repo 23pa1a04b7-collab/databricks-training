@@ -15,6 +15,43 @@ LAG() -> Returns previous row value
 LEAD() -> Returns next row value
 
 --------------------------------------------------
+###Database Schema
+The datasets models a retail sales company with employees,customers,products,and orders.
+
+### 1.employees
+employee_id        employee_name      department       salary       hire_date
+1                  Alice johnson      sales            70000         2020-01-15
+2                  Bob Smith          sales            65000         2021-03-20
+3                 Charlie Brown        IT              90000         2019-07-01
+4                 Diana Prince         IT              95000         2018-11-11
+
+
+
+##  2.orders
+order_id           customer_id         employee_id      order_date      total_amount
+101                 1                   1               2024-01-10       500
+102                 2                   2               2024-01-11       700
+103                 1                   1                2024-01-15       1200
+104                 3                   3                 2024-01-18       300
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # DAY 2 – SQL WINDOW FUNCTIONS
 
 ## 1. Use ROW_NUMBER() to assign a row number to employees ordered by salary descending.
